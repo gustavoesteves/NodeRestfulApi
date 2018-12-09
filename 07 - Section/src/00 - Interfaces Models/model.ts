@@ -1,7 +1,6 @@
 import * as mongoose from "mongoose";
-import { IUser } from "./interfaces";
+import { IUser, IBook } from "./interfaces";
 
-interface IUserModel extends IUser, mongoose.Document { }
 
 const userSchema = new mongoose.Schema({
     email: String,
@@ -9,4 +8,13 @@ const userSchema = new mongoose.Schema({
     displayName: String
 });
 
-export const User = mongoose.model<IUserModel>("User", userSchema);
+const bookSchema = new mongoose.Schema({
+    title: String,
+    editor: String,
+    author: String,
+    price: Number
+});
+
+export const User = mongoose.model<IUser>("User", userSchema);
+
+export const Book = mongoose.model<IBook>('Book', bookSchema);
