@@ -1,0 +1,38 @@
+{
+  "name": "sectio1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scr/app.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node --inspect=5858 -r ts-node/register ./src/app.ts",
+    "start:watch": "nodemon",
+    "build": "tsc"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
+  },
+  "dependencies": {
+    "@types/node": "^10.12.12",
+    "eslint": "^5.9.0",
+    "eslint-plugin-import": "^2.14.0",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.7",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0"
+  }
+}
