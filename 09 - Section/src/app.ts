@@ -1,4 +1,5 @@
-/**
- * There are another solution instead that we create:
- * https://github.com/Microsoft/TypeScript-Node-Starter#typescript-node-starter
- */
+import * as mongoose from "mongoose";
+
+mongoose.connect('mongodb://localhost/db-first-example', { useNewUrlParser: true })
+    .then(() => console.log('mongodb connected...'))
+    .catch(err => console.log('deu errinho', err.message));
