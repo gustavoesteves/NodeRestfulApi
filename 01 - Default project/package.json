@@ -1,12 +1,12 @@
 {
-  "name": "sectio1",
+  "name": "default-project",
   "version": "1.0.0",
   "description": "",
-  "main": "scr/app.js",
+  "main": "scr/server.js",
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "node --inspect=5858 -r ts-node/register ./src/app.ts",
+    "start": "node --inspect=5858 -r ts-node/register ./src/server.ts",
     "start:watch": "nodemon",
     "build": "tsc"
   },
