@@ -1,8 +1,11 @@
 import * as express from "express";
+import { logger } from "./logger/logger";
 import { error } from "./middleware/error";
 import Rejected from "./01 - Handling Rejected Promises/rejected";
 import expressasync from "./03 - Express Async Error/expressasync";
+
 const app = express();
+logger;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
