@@ -1,4 +1,13 @@
-/**
- * There are another solution instead that we create:
- * https://github.com/Microsoft/TypeScript-Node-Starter#typescript-node-starter
- */
+import * as express from "express";
+import { logger } from "./startup/logger";
+import { config } from "./startup/config";
+import { routes } from "./startup/routes";
+import { info } from "winston";
+
+const app = express();
+logger();
+// config();
+routes(app);
+
+const port = process.env.port || 3000;
+app.listen(port, () => info('listening on port: ' + port));
