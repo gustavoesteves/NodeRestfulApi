@@ -10,4 +10,4 @@ logger();
 routes(app);
 
 const port = process.env.port || 3000;
-app.listen(port, () => info('listening on port: ' + port));
+export const server = app.listen(port, () => info('listening on port: ' + port));
