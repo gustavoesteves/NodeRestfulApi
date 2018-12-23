@@ -1,12 +1,15 @@
 import * as express from "express";
-import { logger } from "./startup/logger";
-import { config } from "./startup/config";
-import { routes } from "./startup/routes";
+import { logger } from "./startup/logger.startup";
+import { config } from "./startup/config.startup";
+import { db } from "./startup/db.startup";
+import { routes } from "./startup/routes.startup";
 import { info } from "winston";
 
 const app = express();
+
 logger();
-// config();
+config();
+db();
 routes(app);
 
 const port = process.env.port || 3000;
