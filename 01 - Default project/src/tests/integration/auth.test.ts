@@ -35,7 +35,7 @@ describe('Authentication Controller', () => {
 
     describe('auth', () => {
         it('Access denied. No token provided.', () => {
-
+            //
         });
     });
 });
