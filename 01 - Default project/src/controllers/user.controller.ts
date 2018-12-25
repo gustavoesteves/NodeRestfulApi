@@ -12,7 +12,7 @@ router.get('/me', auth, (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     service.post(req.body)
-        .then((user: any) => res.header('x-auth-token', user.token).send({
+        .then((user: any) => res.cookie('Authentication', user.token).send({
             _id: user._id,
             name: user.name,
             email: user.email

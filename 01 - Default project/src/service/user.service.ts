@@ -21,10 +21,10 @@ async function post(user: IUser) {
     await newUser.save();
 
     return await {
-        token: await UserModel.schema.methods.generateAuthToken,
-        _id: user._id,
-        name: user.name,
-        email: user.email
+        token: await newUser.schema.methods.generateAuthToken(),
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email
     };
 }
 

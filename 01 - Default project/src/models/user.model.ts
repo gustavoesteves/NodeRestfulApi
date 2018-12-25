@@ -1,9 +1,9 @@
 import { model, Schema } from "mongoose";
 import { sign } from "jsonwebtoken";
 import { get } from "config";
-import { IUser } from "../interfaces/user.interface";
+import { IUserModel } from "../interfaces/user.interface";
 
-export const UserModel = model<IUser>('User', new Schema({
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -26,9 +26,11 @@ export const UserModel = model<IUser>('User', new Schema({
         type: String,
         required: true,
     }
-}));
+});
 
-UserModel.schema.methods.GenerateAuthToken = function () {
+UserSchema.methods.generateAuthToken = function () {
     const token = sign({ _id: this._id }, get('jwtPrivateKey'));
     return token;
 }
+
+export const UserModel = model<IUserModel>('User', UserSchema);

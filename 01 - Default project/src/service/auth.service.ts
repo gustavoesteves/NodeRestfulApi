@@ -13,11 +13,11 @@ async function post(user: IUser) {
     if (!await compare(user.password, _user.password))
         throw 'Invalid email or password.';
 
-    return await UserModel.schema.methods.GenerateAuthToken;
+    return await _user.schema.methods.generateAuthToken();
 }
 
 async function auth(req: Request) {
-    const token = req.header('x-auth-token');
+    const token = req.cookies('Authentication');
     if (!token) throw 'Access denied. No token provided.';
 
     return await verify(token, get('jwtPrivateKey'));
