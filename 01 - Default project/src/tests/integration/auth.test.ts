@@ -18,7 +18,7 @@ describe('Authentication Controller', () => {
     });
 
     describe('POST /', () => {
-        it('Invalid email or password', async () => {
+        test('Invalid email or password', async () => {
             await NewUser();
             return await supertest(_server)
                 .post('/api/auth')
@@ -34,7 +34,7 @@ describe('Authentication Controller', () => {
     });
 
     describe('auth', () => {
-        it('Access denied. No token provided.', () => {
+        test('Access denied. No token provided.', () => {
             //
         });
     });

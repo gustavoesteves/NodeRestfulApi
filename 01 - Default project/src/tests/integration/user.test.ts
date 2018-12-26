@@ -1,4 +1,3 @@
-import { Server } from "http";
 import { equal } from "assert";
 import * as supertest from "supertest";
 import { server } from "../../server";
@@ -6,18 +5,16 @@ import { UserModel } from "../../models/user.model";
 import { NewUser } from "./newUser";
 
 describe('User Controller', () => {
-    let _server: Server;
 
     beforeAll(() => {
-        _server = server;
     });
 
     afterAll(async () => {
-        await _server.close();
+        await server.close();
         await UserModel.remove({});
     });
 
-    it('testing database connection and save', async () => {
+    test('testing database connection and save', async () => {
         await NewUser();
         expect(await UserModel.find()).not.toBeNull();
     });
@@ -27,8 +24,8 @@ describe('User Controller', () => {
     });
 
     describe('POST /', () => {
-        it('could not find a user already registered', async () => {
-            return await supertest(_server)
+        test('could not find a user already registered', async () => {
+            return await supertest(server)
                 .post('/api/users')
                 .send({
                     name: 'aaaaa',
@@ -42,9 +39,9 @@ describe('User Controller', () => {
                 });
         });
 
-        it('if the name is less than 5 then it can not be saved', async () => {
+        test('if the name is less than 5 then it can not be saved', async () => {
             await UserModel.remove({});
-            return await supertest(_server)
+            return await supertest(server)
                 .post('/api/users')
                 .send({
                     name: 'aaaa',
@@ -59,9 +56,9 @@ describe('User Controller', () => {
                 });
         });
 
-        it('register a new user', async () => {
+        test('register a new user', async () => {
             await UserModel.remove({});
-            return await supertest(_server)
+            return await supertest(server)
                 .post('/api/users')
                 .send({
                     name: 'aaaaa',

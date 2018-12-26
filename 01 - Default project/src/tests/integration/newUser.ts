@@ -10,5 +10,6 @@ export async function NewUser() {
     });
     const salt = await genSalt(10);
     newUser.password = await hash(newUser.password, salt);
-    return newUser.save();
+    await newUser.save();
+    return newUser;
 }
