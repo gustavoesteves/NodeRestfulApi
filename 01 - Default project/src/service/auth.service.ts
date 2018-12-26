@@ -17,7 +17,7 @@ async function post(user: IUser) {
 }
 
 async function auth(req: Request) {
-    const token = req.cookies('Authentication');
+    const token = req.headers.authorization.slice(7);
     if (!token) throw 'Access denied. No token provided.';
 
     return await verify(token, get('jwtPrivateKey'));

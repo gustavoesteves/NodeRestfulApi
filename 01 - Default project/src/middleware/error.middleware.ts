@@ -13,6 +13,7 @@ export function error(err: Error, req: Request, res: Response, next: NextFunctio
     }
 
     if (err.name === 'UnauthorizedError') {
+        console.log('entao foi aqui...');
         // jwt authentication error
         return res.status(401).json('Invalid Token');
     }
