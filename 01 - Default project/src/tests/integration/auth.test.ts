@@ -3,7 +3,7 @@ import { equal } from "assert";
 import supertest = require("supertest");
 import { server } from "../../server";
 import { UserModel } from "../../models/user.model";
-import { NewUser } from "./newUser";
+import { NewUser } from "./data/newUser";
 
 describe('Authentication Controller', () => {
     let _server: Server;
@@ -28,7 +28,7 @@ describe('Authentication Controller', () => {
                 })
                 .expect(400)
                 .then((value) => {
-                    equal(value.text, '{"message":"Invalid email or password."}');
+                    equal(value.text, 'Invalid email or password.');
                 });
         });
     });

@@ -1,5 +1,5 @@
 import { genSalt, hash } from "bcrypt";
-import { UserModel } from "../../models/user.model";
+import { UserModel } from "../../../models/user.model";
 
 export async function NewUser() {
     const newUser = new UserModel({
