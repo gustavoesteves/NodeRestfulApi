@@ -6,7 +6,7 @@ async function get(id: string) {
     return await UserModel.findById(id).select('-password');
 }
 
-async function post(user: IUser) {
+async function register(user: IUser) {
     if (await UserModel.findOne({ email: user.email }))
         throw 'User already registered';
 
@@ -28,4 +28,4 @@ async function post(user: IUser) {
     };
 }
 
-export default { get, post }
+export default { get, register }
