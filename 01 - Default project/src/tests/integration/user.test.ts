@@ -2,32 +2,33 @@ import { equal } from "assert";
 import * as supertest from "supertest";
 import { server } from "../../server";
 import { UserModel } from "../../models/user.model";
-import { NewUser } from "./data/newUser";
 
 describe('User Controller', () => {
 
-    beforeAll(() => {
-    });
+    beforeAll(() => { });
 
     afterAll(async () => {
         await server.close();
-        await UserModel.remove({});
+        await UserModel.deleteMany({});
     });
 
     test('testing database connection and save', async () => {
-        await NewUser();
+        const newUser = new UserModel({
+            name: 'aaaaa',
+            email: 'a@a.com',
+            username: 'a',
+            password: 'aaaaa'
+        });
+        await newUser.save();
         expect(await UserModel.find()).not.toBeNull();
     });
 
     describe('POST /', () => {
-        test('could not find a user already registered', async () => {
+        test('User already registered', async () => {
             return await supertest(server)
                 .post('/api/users')
                 .send({
-                    name: 'aaaaa',
-                    email: 'aaa@aaa.com',
-                    username: 'aaaa',
-                    password: 'aaaa'
+                    email: 'a@a.com'
                 })
                 .expect(400)
                 .then((value) => {
@@ -36,7 +37,7 @@ describe('User Controller', () => {
         });
 
         test('if the name is less than 5 then it can not be saved', async () => {
-            await UserModel.remove({});
+            await UserModel.deleteMany({});
             return await supertest(server)
                 .post('/api/users')
                 .send({
@@ -52,7 +53,7 @@ describe('User Controller', () => {
         });
 
         test('register a new user', async () => {
-            await UserModel.remove({});
+            await UserModel.deleteMany({});
             return await supertest(server)
                 .post('/api/users')
                 .send({
@@ -80,7 +81,7 @@ describe('User Controller', () => {
         });
 
         test('Create a new User and get a token and _id user', async () => {
-            await UserModel.remove({});
+            await UserModel.deleteMany({});
             await supertest(server)
                 .post('/api/users')
                 .send({

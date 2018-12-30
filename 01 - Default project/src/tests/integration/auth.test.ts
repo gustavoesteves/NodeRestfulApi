@@ -3,7 +3,6 @@ import { equal } from "assert";
 import supertest = require("supertest");
 import { server } from "../../server";
 import { UserModel } from "../../models/user.model";
-import { NewUser } from "./data/newUser";
 
 describe('Authentication Controller', () => {
     let _server: Server;
@@ -19,7 +18,13 @@ describe('Authentication Controller', () => {
 
     describe('POST /', () => {
         test('Invalid email or password', async () => {
-            await NewUser();
+            const newUser = new UserModel({
+                name: 'aaaaa',
+                email: 'a@a.com',
+                username: 'a',
+                password: 'aaaaa'
+            });
+            await newUser.save();
             return await supertest(_server)
                 .post('/api/auth')
                 .send({
@@ -30,12 +35,6 @@ describe('Authentication Controller', () => {
                 .then((value) => {
                     equal(value.text, 'Invalid email or password.');
                 });
-        });
-    });
-
-    describe('auth', () => {
-        test('Access denied. No token provided.', () => {
-            //
         });
     });
 });
