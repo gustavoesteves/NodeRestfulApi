@@ -1,19 +1,18 @@
 import * as logger from "winston";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
-export function error(err: Error, req: Request, res: Response, next: NextFunction) {
+export function error(err: Error, req: Request, res: Response, next: Function) {
     if (typeof (err) === 'string') {
         // custom application error
-        return res.status(400).send(err);
+        return res.status(400).json(err);
     }
 
     if (err.name === 'ValidationError') {
         // mongoose validation error
-        return res.status(400).send(err.message);
+        return res.status(400).json(err.message);
     }
 
     if (err.name === 'UnauthorizedError') {
-        console.log('entao foi aqui...');
         // jwt authentication error
         return res.status(401).json('Invalid Token');
     }

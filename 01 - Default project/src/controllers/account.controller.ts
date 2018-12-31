@@ -4,30 +4,30 @@ import service from "../service/account.service";
 
 const router = Router();
 
-router.get('/UserInfo', auth, (req, res, next) => { 
-    service.get(req.body._id)
-        .then((user) => res.send(user))
-        .catch((err) => next(err));
+router.get('/UserInfo', auth, (req, res, next) => {
+    service.userinfo(req.body._id)
+        .then(user => res.json(user))
+        .catch(err => next(err));
 });
 
 router.post('/Logout', auth, (req, res) => {
-    res.header('Authentication', '').send({});
+    res.header('Authentication', '').json({});
 });
 
 router.get('/ManageLogins', auth, (req, res) => { });
 
 router.post('/ChangePassword', auth, (req, res) => { });
 
-router.get('/Login', (req, res) => { });
+router.get('/Login', (req, res, next) => {
+    service.validate(req.body)
+        .then(user => res.header('Authentication', user.token).json(user))
+        .catch(err => next(err));
+});
 
 router.post('/Register', (req, res, next) => {
     service.register(req.body)
-        .then((user: any) => res.header('Authentication', user.token).send({
-            _id: user._id,
-            name: user.name,
-            email: user.email
-        }))
-        .catch((err) => next(err));
+        .then(user => res.header('Authentication', user.token).json(user))
+        .catch(err => next(err));
 });
 
 export default router;

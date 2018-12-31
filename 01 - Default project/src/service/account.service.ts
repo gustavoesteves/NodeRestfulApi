@@ -1,9 +1,24 @@
-import { genSalt, hash } from "bcrypt";
+import { compare, genSalt, hash } from "bcrypt";
 import { IUser } from "../interfaces/user.interface";
 import { UserModel } from "../models/user.model";
 
-async function get(id: string) {
+async function userinfo(id: string) {
+    console.log('service userinfo');
     return await UserModel.findById(id).select('-password');
+}
+
+async function validate(user: IUser) {
+    //validate
+    const _user = await UserModel.findOne({ email: user.email });
+    if (!_user)
+        throw 'Invalid email or password.';
+    if (!await compare(user.password, _user.password))
+        throw 'Invalid email or password.';
+
+    return Object({
+        token: await _user.schema.methods.generateAuthToken(),
+        _id: _user._id
+    });
 }
 
 async function register(user: IUser) {
@@ -28,4 +43,4 @@ async function register(user: IUser) {
     };
 }
 
-export default { get, register }
+export default { register, userinfo, validate }
