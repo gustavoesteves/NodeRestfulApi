@@ -110,4 +110,13 @@ describe('account test', () => {
                 .expect(200);
         });
     });
+
+    describe('post - logout', () => {
+        test('Everything alright', () => {
+            return supertest(server)
+                .post('/api/account/logout')
+                .set('Authentication', '')
+                .expect(200);
+        });
+    });
 });
