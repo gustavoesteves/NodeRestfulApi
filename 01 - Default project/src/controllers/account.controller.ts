@@ -10,7 +10,7 @@ router.get('/UserInfo', auth, (req, res, next) => {
         .catch(err => next(err));
 });
 
-router.post('/Logout', auth, (req, res) => {
+router.post('/Logout', (req, res) => {
     res.header('Authentication', '').json({});
 });
 

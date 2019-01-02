@@ -1,9 +1,19 @@
 import supertest = require("supertest");
 import { server } from "../../../server";
 import { UserModel } from "../../../models/user.model";
+import { IUserModel } from "../../../interfaces/user.interface";
 
 describe('account test', () => {
-    beforeAll(() => { });
+    let newUser: IUserModel;
+
+    beforeAll(() => {
+        newUser = new UserModel({
+            name: 'aaaaa',
+            username: 'a',
+            email: 'a@a.com',
+            password: 'A1@aaaa'
+        });
+    });
 
     afterAll(async () => {
         await server.close();
@@ -12,12 +22,6 @@ describe('account test', () => {
 
     describe('post - register', () => {
         test('User already register', async () => {
-            const newUser = new UserModel({
-                name: 'aaaaa',
-                username: 'a',
-                email: 'a@a.com',
-                password: 'aaaaa'
-            });
             await newUser.save();
             return supertest(server)
                 .post('/api/account/register')
@@ -25,11 +29,43 @@ describe('account test', () => {
                     name: 'aaaaa',
                     username: 'a',
                     email: 'a@a.com',
-                    password: 'aaaaa'
+                    password: 'A1@aaaa'
                 })
                 .expect(400)
                 .then(res => {
-                    expect(res.text).toBe('User already registered');
+                    expect(JSON.parse(res.text)).toBe('User already registered');
+                });
+        });
+
+        test('Invalid email', async () => {
+            await UserModel.deleteMany({});
+            return supertest(server)
+                .post('/api/account/register')
+                .send({
+                    name: 'aaaaa',
+                    username: 'a',
+                    email: '@a.com',
+                    password: 'A1@aaaa'
+                })
+                .expect(400)
+                .then(res => {
+                    expect(JSON.parse(res.text)).toBe('User validation failed: email: Is not a valid email');
+                });
+        });
+
+        test('Invalid password', async () => {
+            await UserModel.deleteMany({});
+            return supertest(server)
+                .post('/api/account/register')
+                .send({
+                    name: 'aaaaa',
+                    username: 'a',
+                    email: 'a@a.com',
+                    password: 'A1@aaa'
+                })
+                .expect(400)
+                .then(res => {
+                    expect(JSON.parse(res.text)).toBe('Invalid password');
                 });
         });
 
@@ -41,7 +77,7 @@ describe('account test', () => {
                     name: 'aaaaa',
                     username: 'a',
                     email: 'a@a.com',
-                    password: 'aaaaa'
+                    password: 'A1@aaaa'
                 })
                 .expect(200);
         });
@@ -53,11 +89,11 @@ describe('account test', () => {
                 .get('/api/account/login')
                 .send({
                     email: 'b@a.com',
-                    password: 'aaaaa'
+                    password: 'a'
                 })
                 .expect(400)
                 .then(res => {
-                    expect(res.text).toBe('Invalid email or password.');
+                    expect(JSON.parse(res.text)).toBe('Invalid email or password.');
                 });
         });
 
@@ -66,7 +102,7 @@ describe('account test', () => {
                 .get('/api/account/login')
                 .send({
                     email: 'a@a.com',
-                    password: 'aaaaa'
+                    password: 'A1@aaaa'
                 })
                 .expect(200);
         });
@@ -79,7 +115,7 @@ describe('account test', () => {
                 .send({ _id: 'a' })
                 .expect(400)
                 .then(res => {
-                    expect(res.text).toBe('Access denied. No token provided.');
+                    expect(JSON.parse(res.text)).toBe('Access denied. No token provided.');
                 });
         });
 
@@ -96,7 +132,7 @@ describe('account test', () => {
                 .get('/api/account/login')
                 .send({
                     email: 'a@a.com',
-                    password: 'aaaaa'
+                    password: 'A1@aaaa'
                 })
                 .expect(200)
                 .then(res => {

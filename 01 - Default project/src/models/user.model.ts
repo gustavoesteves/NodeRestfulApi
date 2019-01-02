@@ -20,16 +20,27 @@ const UserSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        trim: true
+        trim: true,
+        validate: {
+            validator: function (value: string) {
+                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(value);
+            },
+            msg: 'Is not a valid email'
+        }
     },
     password: {
         type: String,
         required: true,
+        minLength: 7
     }
 });
 
-UserSchema.methods.generateAuthToken = function () {
-    const token = sign({ _id: this._id }, get('jwtPrivateKey'));
+UserSchema.methods.validatePassword = function (password: string) {
+    return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{7,20}$/.test(password);
+}
+
+UserSchema.methods.generateAuthToken = function (_id: string) {
+    const token = sign({ _id: _id }, get('jwtPrivateKey'));
     return token;
 }
 
