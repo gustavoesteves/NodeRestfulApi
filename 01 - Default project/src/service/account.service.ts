@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { compare, genSalt, hash } from "bcrypt";
 import { IUser } from "../interfaces/user.interface";
 import { UserModel } from "../models/user.model";
@@ -6,10 +7,16 @@ async function userinfo(id: string) {
     return await UserModel.findById(id).select('-password');
 }
 
-async function changePassword(req: any) {
+async function changePassword(req: Request) {
     const user = await UserModel.findOne({ _id: req.body._id });
+
+    const errPassword = await user.schema.methods.validatePassword(req.body.newPassword);
+    if (!errPassword)
+        throw 'Invalid password';
+
     user.password = req.body.newPassword;
-    return await user.save();
+    await user.save();
+    return user;
 }
 
 async function validate(user: IUser) {

@@ -16,7 +16,11 @@ router.post('/Logout', (req, res) => {
 
 router.get('/ManageLogins', auth, (req, res) => { });
 
-router.post('/ChangePassword', auth, (req, res) => { });
+router.post('/ChangePassword', auth, (req, res, next) => {
+    service.changePassword(req)
+        .then(user => res.json(user))
+        .catch(err => next(err));
+});
 
 router.get('/Login', (req, res, next) => {
     service.validate(req.body)

@@ -1,4 +1,3 @@
-import { server } from "../../../server";
 import { UserModel } from "../../../models/user.model";
 import { IUserModel } from "../../../interfaces/user.interface";
 
